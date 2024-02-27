@@ -5,7 +5,6 @@
  */
 package quyenpq.servlet;
 
-
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,12 +17,15 @@ import javax.servlet.http.HttpServletResponse;
 // án TW z á, nó chỉ gọi những thằng khác ra xử lý mà không có xử lý tại đây
 @WebServlet(name = "DispatchServlet", urlPatterns = {"/DispatchServlet"})
 public class DispatchServlet extends HttpServlet {
+
     private final String LOGIN_PAGE = "login.html";
     private final String LOGIN_CONTROLLER = "LoginServlet";
     private final String SEARCH_LASTNAME_CONTROLLER = "SearchLastnameServlet";
     private final String DELETE_ACCOUNT_CONTROLLER = "DeleteAccountServlet";
     private final String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
     private final String START_UP_CONTROLLER = "StartUpServlet";
+    private final String ADD_TO_CART_CONTROLLER = "AddToCartServlet";
+    private final String VIEW_CART = "viewCart.jsp";
 
 //        chỗ này phải coi lại nè 
 //        do mình tạo sai file
@@ -47,6 +49,10 @@ public class DispatchServlet extends HttpServlet {
                 url = DELETE_ACCOUNT_CONTROLLER;
             } else if (button.equals("Update")) {
                 url = UPDATE_ACCOUNT_CONTROLLER;
+            } else if (button.equals("Add Book To Your Cart")) {
+                url = ADD_TO_CART_CONTROLLER;
+            } else if (button.equals("View Your Cart")) {
+                url = VIEW_CART;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

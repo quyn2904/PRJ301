@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Product</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1>Book Store</h1>
+        <form action="DispatchServlet">
+            Choose <select name="cboBook">
+                <option>Angular</option>
+                <option>React</option>
+                <option>Java</option>
+                <option>NodeJs</option>
+                <option>JavaScript</option>
+                <option>C#</option>
+                <option>C/C++</option>
+                <option>VueJs</option>
+            </select><br/>
+            <input type="submit" value="Add Book To Your Cart" name="btAction"/>
+            <input type="reset" value="Reset"/>
+            
+            <button name="btAction" value="View Your Cart">View Your Cart</button>
+        </form>
+    </body>
+</html>
