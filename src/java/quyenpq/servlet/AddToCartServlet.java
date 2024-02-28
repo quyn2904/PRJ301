@@ -38,7 +38,7 @@ public class AddToCartServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR_PAGE;
-        try (PrintWriter out = response.getWriter()) {
+        try {
             //1. Cust goes to the cart place
             HttpSession session = request.getSession();
             //2. Cust takes the cart
