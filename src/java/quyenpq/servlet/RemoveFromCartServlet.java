@@ -7,6 +7,7 @@ package quyenpq.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +20,9 @@ import quyenpq.cart.CartObject;
  *
  * @author Goby
  */
-@WebServlet(name = "AddToCartServlet", urlPatterns = {"/AddToCartServlet"})
-public class AddToCartServlet extends HttpServlet {
+@WebServlet(name = "RemoveFromCartServlet", urlPatterns = {"/RemoveFromCartServlet"})
+public class RemoveFromCartServlet extends HttpServlet {
 
-    private String ERROR_PAGE = "error.html";
-    private String PRODUCT_PAGE = "product.html";
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,26 +35,35 @@ public class AddToCartServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR_PAGE;
         try {
-            //1. Cust goes to the cart place
-            HttpSession session = request.getSession();
-            //2. Cust takes the cart
-            // call DAO
-            CartObject cart = (CartObject) session.getAttribute("CART");
-            if (cart == null) {
-                cart = new CartObject();
-            }
-            //3. Cust puts item to the cart
-            String item = request.getParameter("cboBook");
-            boolean result = cart.addItemToCart(item);
-            if (result) {
-                session.setAttribute("CART", cart);
-                //4. Cust continue choose item to drop
-                url = PRODUCT_PAGE;
-            }            
+            // 1. customer goes to his/her cart
+            HttpSession session = request.getSession(false);
+            // session có thời gian time out, client mở view cart nhưng k thao tác 
+            // quá thời gian timeout thì ở client gdien vẫn vậy nhưng server chưa chắc đã tồn tại
+            // -> check false
+            if(session != null) {
+                // 2. customer takes his/her cart
+                CartObject cart = (CartObject)session.getAttribute("CART");
+                if(cart != null) {
+                    // 3. customer gets items
+                    Map<String, Integer> items = cart.getItems();
+                    if(items != null) {
+                        // 4. customer remove item from items
+                        String[] selectedItems = request.getParameterValues("chkItem");
+                        if(selectedItems != null) {
+                            for(String item: selectedItems) {
+                                cart.removeItemFromCart(item);
+                            }// remove action is success
+                            session.setAttribute("CART", cart);
+                        }// user must check at least one item
+                    }// items have existed
+                }// cart has existed
+            }// session has existed
         } finally {
-            response.sendRedirect(url);
+            // refresh => call previous function again using URL Rewriting techique
+            String urlRewriting = "DispatchServlet"
+                    + "?btAction=View Your Cart";
+            response.sendRedirect(urlRewriting);
         }
     }
 
