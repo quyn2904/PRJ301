@@ -26,12 +26,14 @@ import quyenpq.util.DBHelper;
 //3. đóng lại trong tất cả mọi trường hợp
 public class UsersDAO implements Serializable {
 
-    public boolean checkLogin(String username, String password)
+    //public boolean checkLogin(String username, String password)
+    //        throws SQLException, /*ClassNotFoundException,*/ NamingException {
+    public UsersDTO checkLogin(String username, String password)
             throws SQLException, /*ClassNotFoundException,*/ NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
-        boolean result = false;
+        UsersDTO result = null;
 
         try {
             //1. get Connection
@@ -39,7 +41,7 @@ public class UsersDAO implements Serializable {
             if (con != null) {
                 //ném ra 2 lỗi: classNotFound và 
                 //2. create SQL String
-                String sql = "Select username "
+                String sql = "Select lastname, isAdmin "
                         + "From users "
                         + "Where username = ? "
                         + "And password = ?";
@@ -53,7 +55,11 @@ public class UsersDAO implements Serializable {
                 rs = stm.executeQuery();
                 //5. Process Result
                 if (rs.next()) {
-                    result = true;
+                    //result = true;
+                    //map ==> get Data từ resultset và set data to DTO property
+                    String fullname = rs.getString("lastname");
+                    boolean isAdmin = rs.getBoolean("isAdmin");
+                    result = new UsersDTO(username, null, fullname, isAdmin);
                 }//end username and password are check
             } //end connection has been available
         } finally {

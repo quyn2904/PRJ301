@@ -5,18 +5,65 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        <title>Login</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <h1>Login Page</h1>
+  <head>
+    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/stylesheets/login.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="left-side">
+        <h1 class="title">Sign in</h1>
+
+        <div class="btn-group">
+          <a href=""><img src="./assets/images/Google-icon.png" /></a>
+          <a href=""><img src="./assets/images/Facebook-icon.png" /></a>
+          <a href=""><img src="./assets/images/GitHub-icon.png" /></a>
+        </div>
+
         <form action="LoginServlet" method="POST">
-            Username <input type="text" name="txtUsername" value="" /> <br/>
-            Password <input type="password" name="txtPassword" value="" /> <br/>
-            <input type="submit" value="Login" name="btAction" />
-            <input type="reset" value="Reset" />
-        </form><br/><a href="product.html">Go Shopping</a>
-    </body>
+          <div class="input-group">
+            <label for="username">Or Use Your Account:</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Username"
+              name="txtUsername"
+              value=""
+            />
+            <br />
+          </div>
+          <div class="input-group">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              name="txtPassword"
+              value=""
+              placeholder="Password"
+            />
+          </div>
+          <a href="" id="forgot-password">Forgot your Password?</a>
+          <input
+            id="submit-btn"
+            type="submit"
+            value="SIGN IN"
+            name="btAction"
+          />
+        </form>
+      </div>
+      <div class="right-side">
+        <h3 id="title-white">Hello !!</h3>
+        <p>
+          Input your detailed information and let's start the adventure
+          together!
+        </p>
+        <button id="sign-up">SIGN UP</button>
+      </div>
+    </div>
+  </body>
 </html>

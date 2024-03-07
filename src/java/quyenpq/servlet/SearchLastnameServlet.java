@@ -45,7 +45,6 @@ public class SearchLastnameServlet extends HttpServlet {
                 UsersDAO dao = new UsersDAO();
                 // 2.2 call method of DAO
                 dao.searchLastName(searchValue);
-
                 List<UsersDTO> result = dao.getAccounts();
 //                  attribute giúp lưu dữ liueej vào trong scope
                 request.setAttribute("SEARCH_RESULT", result);

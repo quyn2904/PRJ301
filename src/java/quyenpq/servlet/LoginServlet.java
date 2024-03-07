@@ -15,8 +15,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import quyenpq.util.DBHelper;
 import quyenpq.users.UsersDAO;
+import quyenpq.users.UsersDTO;
 
 /**
  *
@@ -52,10 +54,13 @@ public class LoginServlet extends HttpServlet {
                 //  2.1. New DAO object
                 UsersDAO dao = new UsersDAO();
                 //  2.2. call method of DAO
-                boolean result = dao.checkLogin(username, password);
+                UsersDTO result = dao.checkLogin(username, password);
                 //3. process result
-                if (result) {
+                if (result != null) {
                     url = SEARCH_PAGE;
+                    //getSession true vì mới login k có session, tạo lưu giá trị
+                    HttpSession session = request.getSession();
+                    session.setAttribute("USER_INFO", result);
                     //write cookie
                     Cookie cookie = new Cookie(username, password);
                     cookie.setMaxAge(60 * 3);

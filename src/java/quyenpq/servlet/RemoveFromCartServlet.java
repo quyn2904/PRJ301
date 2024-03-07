@@ -7,28 +7,21 @@ package quyenpq.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.naming.NamingException;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import quyenpq.users.UsersDAO;
-import quyenpq.users.UsersDTO;
+import javax.servlet.http.HttpSession;
+import quyenpq.cart.CartObject;
 
 /**
  *
  * @author Goby
  */
-@WebServlet(name = "StartUpServlet", urlPatterns = {"/StartUpServlet"})
-public class StartUpServlet extends HttpServlet {
-
-    private final String LOGIN_PAGE = "LoginServlet";
-    private final String SEARCH_PAGE = "search.jsp";
+@WebServlet(name = "RemoveFromCartServlet", urlPatterns = {"/RemoveFromCartServlet"})
+public class RemoveFromCartServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,29 +35,35 @@ public class StartUpServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = LOGIN_PAGE;
         try {
-            //1. check existed cookies
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                //2. get name & value (userName & password)
-                Cookie newestCookie = cookies[cookies.length - 1];
-                String username = newestCookie.getName();
-                String password = newestCookie.getValue();
-                //3. check Login (call Model)
-                UsersDAO dao = new UsersDAO();
-                UsersDTO result = dao.checkLogin(username, password);
-                //4. process result
-                if (result != null) {
-                    url = SEARCH_PAGE;
-                } //end authentication is ok
-            } //not first time
-        } catch (SQLException ex) {
-            Logger.getLogger(StartUpServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NamingException ex) {
-            Logger.getLogger(StartUpServlet.class.getName()).log(Level.SEVERE, null, ex);
+            // 1. customer goes to his/her cart
+            HttpSession session = request.getSession(false);
+            // session có thời gian time out, client mở view cart nhưng k thao tác 
+            // quá thời gian timeout thì ở client gdien vẫn vậy nhưng server chưa chắc đã tồn tại
+            // -> check false
+            if(session != null) {
+                // 2. customer takes his/her cart
+                CartObject cart = (CartObject)session.getAttribute("CART");
+                if(cart != null) {
+                    // 3. customer gets items
+                    Map<String, Integer> items = cart.getItems();
+                    if(items != null) {
+                        // 4. customer remove item from items
+                        String[] selectedItems = request.getParameterValues("chkItem");
+                        if(selectedItems != null) {
+                            for(String item: selectedItems) {
+                                cart.removeItemFromCart(item);
+                            }// remove action is success
+                            session.setAttribute("CART", cart);
+                        }// user must check at least one item
+                    }// items have existed
+                }// cart has existed
+            }// session has existed
         } finally {
-            response.sendRedirect(url);
+            // refresh => call previous function again using URL Rewriting techique
+            String urlRewriting = "DispatchServlet"
+                    + "?btAction=View Your Cart";
+            response.sendRedirect(urlRewriting);
         }
     }
 
