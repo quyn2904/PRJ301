@@ -27,6 +27,7 @@ public class DispatchServlet extends HttpServlet {
     private final String ADD_TO_CART_CONTROLLER = "AddToCartServlet";
     private final String VIEW_CART = "viewCart.jsp";
     private final String REMOVE_FROM_CART_CONTROLLER = "RemoveFromCartServlet";
+    private final String CREATE_ACCOUNT_CONTROLLER = "CreateAccountServlet";
 
 //        chỗ này phải coi lại nè 
 //        do mình tạo sai file
@@ -56,6 +57,8 @@ public class DispatchServlet extends HttpServlet {
                 url = VIEW_CART;
             } else if (button.equals("Remove Selected Items")) {
                 url = REMOVE_FROM_CART_CONTROLLER;
+            } else if (button.equals("Create Account")) {
+                url = CREATE_ACCOUNT_CONTROLLER;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

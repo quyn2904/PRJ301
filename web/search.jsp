@@ -17,7 +17,7 @@
     </head>
     <body>
         <font color="red">
-            Welcome, ${sessionScope.USER_INFO.fullName}
+        Welcome, ${sessionScope.USER_INFO.fullName}
         </font>
         <h1>Search</h1>
         <form action="DispatchServlet">
@@ -26,10 +26,10 @@
             <input type="submit" value="Search" name="btAction" />
         </form>
         <br/>
-        <c:set var="searchValue" value="${param.txtSearchValue}"/>
+        <c:set var="searchValue" value="${param.txtSearchValue}" />
         <c:if test="${not empty searchValue}">
             <c:set var="result" value="${requestScope.SEARCH_RESULT}"/>
-            <c:if test="{not empty result}">
+            <c:if test="${not empty result}">
                 <table>
                     <thead>
                         <tr>
@@ -38,49 +38,76 @@
                             <th>Password</th>
                             <th>Full Name</th>
                             <th>Role</th>                            
+                            <th>Delete</th>  
+                            <th>Update</th>  
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="user" items="searchValue" varStatus="tracking">
+                        <c:forEach var="dto" items="${result}" varStatus="counter">
+                        <form action="DispatchServlet" method="POST">
                             <tr>
-                                <td>${tracking.index}</td>
-                                <td>${user.username}</td>
-                                <td>${user.password}</td>
-                                <td>${user.fullName}</td>
-                                <td>${user.isAdmin}</td>
+                                <td>${counter.count}</td>
+                                <td>
+                                    ${dto.username}
+                                    <input type="hidden" name="txtUsername" value="${dto.username}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="txtPassword" value="${dto.password}"/>
+                                </td>
+                                <td>${dto.fullName}</td>
+                                <td>
+                                    <input type="checkbox" name="chkAdmin" value="ON"
+                                           <c:if test="${dto.role}">
+                                               checked="checked"
+                                           </c:if>
+                                           />
+                                </td>
+                                <td>
+                                    <c:url var="deleteLink" value="DispatchServlet">
+                                        <c:param name="pk" value="${dto.username}"/>
+                                        <c:param name="lastSearchValue" value="${searchValue}"/>
+                                        <c:param name="btAction" value="Delete"/>
+                                    </c:url>
+                                    <a href="${deleteLink}">Delete</a>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="lastSearchValue" value="${searchValue}"/>
+                                    <input type="submit" name="btAction" value="Update"/>
+                                </td>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:if>
-            <c:if test="{empty result}">
-                No record is matched!!!
-            </c:if>
+                        </form>
+                    </c:forEach>
+                </tbody>
+            </table>
         </c:if>
-         
+        <c:if test="{empty result}">
+            No record is matched!!!
+        </c:if>
+    </c:if>
 
-        <%-- 
-        <%
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                Cookie newestCookie = cookies[cookies.length - 1];
-                String username = newestCookie.getName();
-        %>
-        <font color="red">
-        Welcome, <%= username%>
-        </font>
-        <%
-            }// end no first time
+
+    <%-- 
+    <%
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            Cookie newestCookie = cookies[cookies.length - 1];
+            String username = newestCookie.getName();
     %>
-        <h1>Search</h1>
-        <form action="DispatchServlet">
-            Search Valued  <input type="text" name="txtSearchValue" 
-                                  value="<%= request.getParameter("txtSearchValue")%>"/> <br/>
-            <input type="submit" value="Search" name="btAction" />
-        </form>
-        <br/>
-        <%
-            String searchValue = request.getParameter("txtSearchValue");
+    <font color="red">
+    Welcome, <%= username%>
+    </font>
+    <%
+        }// end no first time
+    %>
+    <h1>Search</h1>
+    <form action="DispatchServlet">
+        Search Valued  <input type="text" name="txtSearchValue" 
+                              value="<%= request.getParameter("txtSearchValue")%>"/> <br/>
+        <input type="submit" value="Search" name="btAction" />
+    </form>
+    <br/>
+    <%
+        String searchValue = request.getParameter("txtSearchValue");
 
             if (searchValue != null) {
                 List<UsersDTO> result = (List<UsersDTO>) request.getAttribute("SEARCH_RESULT");
@@ -162,6 +189,6 @@
             }//end search is NOT found
         }//end search Value is not active when accessing directly
 %>
-        --%>
-    </body>
+    --%>
+</body>
 </html>

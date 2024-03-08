@@ -223,4 +223,41 @@ public class UsersDAO implements Serializable {
         }
         return result;
     }
+
+    public boolean createAccount(UsersDTO account) 
+            throws SQLException, NamingException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        boolean result = false;
+        try {
+            //1. get Connection
+            con = DBHelper.getConnection();
+            if (con != null) {
+                String sql = "Insert Into users ("
+                        + "username, password, lastname, isAdmin"
+                        + ") VALUES ("
+                        + "?, ?, ?, ?"
+                        + ")";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, account.getUsername());
+                stm.setString(2, account.getPassword());
+                stm.setString(3, account.getFullName());
+                stm.setBoolean(4, account.isRole());
+                int effectRows = stm.executeUpdate();
+                if (effectRows > 0) {
+                    result = true;
+                }
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return result;
+
+    }
+
 }

@@ -6,10 +6,8 @@
 package quyenpq.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.naming.NamingException;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +40,6 @@ public class DeleteAccountServlet extends HttpServlet {
         String username = request.getParameter("pk");
         String searchValue = request.getParameter("lastSearchValue");
         String url = ERROR_PAGE;
-
         try {
             //2. call Model
             //2.1. new DAO Object
