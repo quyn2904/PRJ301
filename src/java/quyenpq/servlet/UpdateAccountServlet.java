@@ -40,7 +40,7 @@ public class UpdateAccountServlet extends HttpServlet {
         //1. get all parameters
         String username = request.getParameter("txtUsername");
         String password = request.getParameter("txtPassword");
-        boolean isAdmin = request.getParameter("chkAdmin").equals("ON") ? true : false;
+        boolean isAdmin = request.getParameter("chkAdmin") != null ? true : false;
         String lastSearchValue = request.getParameter("lastSearchValue");
         String url = ERROR_PAGE;
         try {
