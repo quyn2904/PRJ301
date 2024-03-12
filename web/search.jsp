@@ -19,6 +19,7 @@
         <font color="red">
         Welcome, ${sessionScope.USER_INFO.fullName}
         </font>
+        <a href="DispatchServlet?btAction=View+Store">Go Shopping</a>
         <h1>Search</h1>
         <form action="DispatchServlet">
             Search Valued  <input type="text" name="txtSearchValue" 

@@ -25,9 +25,13 @@ public class DispatchServlet extends HttpServlet {
     private final String UPDATE_ACCOUNT_CONTROLLER = "UpdateAccountServlet";
     private final String START_UP_CONTROLLER = "StartUpServlet";
     private final String ADD_TO_CART_CONTROLLER = "AddToCartServlet";
-    private final String VIEW_CART = "viewCart.jsp";
+    private final String VIEW_CART_CONTROLLER = "ViewCartServlet";
     private final String REMOVE_FROM_CART_CONTROLLER = "RemoveFromCartServlet";
     private final String CREATE_ACCOUNT_CONTROLLER = "CreateAccountServlet";
+    private final String VIEW_STORE_CONTROLLER = "ViewStoreServlet";
+    private final String PRODUCT_PAGE = "product.jsp";
+    private final String ADD_PRODUCT_TO_CART_CONTROLLER = "AddProductToCartServlet";
+    private final String CHECK_OUT_CONTROLLER = "CheckOutServlet";
 
 //        chỗ này phải coi lại nè 
 //        do mình tạo sai file
@@ -54,11 +58,17 @@ public class DispatchServlet extends HttpServlet {
             } else if (button.equals("Add Book To Your Cart")) {
                 url = ADD_TO_CART_CONTROLLER;
             } else if (button.equals("View Your Cart")) {
-                url = VIEW_CART;
+                url = VIEW_CART_CONTROLLER;
             } else if (button.equals("Remove Selected Items")) {
                 url = REMOVE_FROM_CART_CONTROLLER;
             } else if (button.equals("Create Account")) {
                 url = CREATE_ACCOUNT_CONTROLLER;
+            } else if (button.equals("View Store")) {
+                url = VIEW_STORE_CONTROLLER;
+            } else if (button.equals("Add Product To Your Cart")) {
+                url = ADD_PRODUCT_TO_CART_CONTROLLER;
+            } else if (button.equals("Check Out")) {
+                url = CHECK_OUT_CONTROLLER;
             }
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);

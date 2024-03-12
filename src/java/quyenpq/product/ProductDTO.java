@@ -51,7 +51,7 @@ public class ProductDTO implements Serializable{
         return quantity;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
